@@ -1,5 +1,4 @@
 package order;
-
 import user.User;
 import user.UserSpec;
 import io.qameta.allure.internal.shadowed.jackson.core.JsonProcessingException;

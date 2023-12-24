@@ -1,5 +1,4 @@
 package order;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import io.qameta.allure.Step;
