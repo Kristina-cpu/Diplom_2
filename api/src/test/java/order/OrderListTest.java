@@ -1,4 +1,5 @@
 package order;
+
 import user.User;
 import user.UserSpec;
 import io.qameta.allure.internal.shadowed.jackson.core.JsonProcessingException;
@@ -14,37 +15,35 @@ public class OrderListTest {
     private String userAccessToken;
     private int numberOfOrders;
 
-    User user;
-    UserSpec userSpec;
-    OrderSpec orderSpec;
+    User user = new User();
 
     @Before
     public void tearUp() throws Exception {
         //создание пользователя
-        user = user.getRandomUser();
+        user = User.getRandomUser();
 
-        userAccessToken = userSpec.getResponseCreateUser(user,200).accessToken;
+        userAccessToken = UserSpec.getResponseCreateUser(user,200).accessToken;
         //количество заказов пользователя
         numberOfOrders = 4;
         //создание списка заказов пользователя
-        orderSpec.createListOfOrders(user, numberOfOrders);
+        OrderSpec.createListOfOrders(user, numberOfOrders);
     }
 
     @After //удаление учетной записи пользователя
     public void tearDown() throws Exception {
-        userSpec.getResponseUserDeleted(userAccessToken, 202);
+        UserSpec.getResponseUserDeleted(userAccessToken, 202);
     }
 
     @Test
     @DisplayName("Тест успешного получения списка заказов авторизованного пользователя")
     public void successfulGetOfOrdersListFromAuthorizedUserTestOk() throws JsonProcessingException {
         //авторизацию пользователя
-        userAccessToken = userSpec.getResponseUserAuthorization(user, 200).accessToken;
+        userAccessToken = UserSpec.getResponseUserAuthorization(user, 200).accessToken;
         //получения списка заказов пользователя
         ArrayList<Integer> orderNumber =
-                new ArrayList<>(orderSpec.getAnOrderListRequestResponse(userAccessToken, 200)
-                .extract()
-                .path("orders.number"));
+                new ArrayList<>(OrderSpec.getAnOrderListRequestResponse(userAccessToken, 200)
+                        .extract()
+                        .path("orders.number"));
         assertEquals(numberOfOrders, orderNumber.size());
     }
 
@@ -52,7 +51,7 @@ public class OrderListTest {
     @DisplayName("Тест неуспешного получения списка заказов неавторизованного пользователя")
     public void failGetOfOrdersListFromUnauthorizedUserTestOk() throws JsonProcessingException {
         //получения списка заказов пользователя
-        orderSpec.getAnOrderListRequestResponse("", 401)
+        OrderSpec.getAnOrderListRequestResponse("", 401)
                 .body("message",equalTo("You should be authorised"));
     }
 }

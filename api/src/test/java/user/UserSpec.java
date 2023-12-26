@@ -19,6 +19,9 @@ public class UserSpec {
     public static String accessToken;
     public static String refreshToken;
 
+    public UserSpec() {
+    }
+
     public UserSpec (boolean success, String message, String accessToken, String refreshToken) {
         this.success = success;
         this.message = message;
