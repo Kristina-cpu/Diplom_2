@@ -19,9 +19,6 @@ public class UserSpec {
     public static String accessToken;
     public static String refreshToken;
 
-    public UserSpec() {
-    }
-
     public UserSpec (boolean success, String message, String accessToken, String refreshToken) {
         this.success = success;
         this.message = message;
@@ -32,7 +29,7 @@ public class UserSpec {
     static ObjectMapper mapper = new ObjectMapper();
 
     @Step("Создание учетной записи пользователя")
-    public static UserSpec getResponseCreateUser(User user, int statusCode) throws JsonProcessingException {
+    public static void getResponseCreateUser(User user, int statusCode) throws JsonProcessingException {
         jsonString = mapper.writeValueAsString(user);
         Response response = given().log().all()
                 .header("Content-Type", "application/json")
@@ -48,11 +45,10 @@ public class UserSpec {
         message = response.path("message");
         accessToken = response.path("accessToken");
         refreshToken = response.path("refreshToken");
-        return new UserSpec(success, message, accessToken, refreshToken);
     }
 
     @Step("Авторизация учетной записи пользователя")
-    public static UserSpec getResponseUserAuthorization (User user, int statusCode) throws JsonProcessingException {
+    public static void getResponseUserAuthorization (User user, int statusCode) throws JsonProcessingException {
         jsonString = mapper.writeValueAsString(user);
         Response response = given().log().all()
                 .header("Content-Type", "application/json")
@@ -67,7 +63,6 @@ public class UserSpec {
         message = response.path("message");
         accessToken = response.path("accessToken");
         refreshToken = response.path("refreshToken");
-        return new UserSpec(success, message, accessToken, refreshToken);
     }
 
     @Step("Выход из учетной записи пользователя")

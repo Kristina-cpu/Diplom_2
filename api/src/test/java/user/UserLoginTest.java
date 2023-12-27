@@ -13,13 +13,14 @@ public class UserLoginTest {
     private boolean userAuthorisationSuccess;
     private String userAccessToken;
 
-    User user;
+    User user = new User();
 
     //создание учетной записи пользователя
     @Before
     public void tearUp() throws Exception {
-        user = user.getRandomUser();
-        userAccessToken = UserSpec.getResponseCreateUser(user,200).accessToken;
+        user = User.getRandomUser();
+        UserSpec.getResponseCreateUser(user,200);
+        userAccessToken = UserSpec.accessToken;
     }
 
     //удаление учетной записи пользователя
@@ -34,9 +35,9 @@ public class UserLoginTest {
         //данные для авторизации существующего пользователя
         User createdUser = new User(user.getEmail(), user.getPassword());
         //авторизация пользователя
-        UserSpec response = UserSpec.getResponseUserAuthorization(createdUser, 200);
-        userAccessToken = response.accessToken;
-        userAuthorisationSuccess = response.success;
+        UserSpec.getResponseUserAuthorization(createdUser, 200);
+        userAccessToken = UserSpec.accessToken;
+        userAuthorisationSuccess = UserSpec.success;
         assertTrue(userAuthorisationSuccess);
     }
 
@@ -47,7 +48,8 @@ public class UserLoginTest {
         //данные для авторизации существующего пользователя
         User createdUser = new User(invalidEmail, user.getPassword());
         //авторизация пользователя
-        userAuthorisationSuccess = UserSpec.getResponseUserAuthorization(createdUser, 401).success;
+        UserSpec.getResponseUserAuthorization(createdUser, 401);
+        userAuthorisationSuccess = UserSpec.success;
         assertFalse(userAuthorisationSuccess);
     }
 
@@ -58,7 +60,8 @@ public class UserLoginTest {
         //данные для авторизации существующего пользователя
         User createdUser = new User(user.getEmail(), invalidPassword);
         //авторизация пользователя
-        userAuthorisationSuccess =  UserSpec.getResponseUserAuthorization(createdUser, 401).success;
+        UserSpec.getResponseUserAuthorization(createdUser, 401);
+        userAuthorisationSuccess =  UserSpec.success;
         assertFalse(userAuthorisationSuccess);
     }
 }
