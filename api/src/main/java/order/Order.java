@@ -2,7 +2,7 @@ package order;
 
 public class Order {
 
-private String[] ingredients;
+    private String[] ingredients;
 
     public Order() {
     }
@@ -18,8 +18,5 @@ private String[] ingredients;
     public void setIngredients(String[] ingredients) {
         this.ingredients = ingredients;
     }
-
-
-
-
 }
+

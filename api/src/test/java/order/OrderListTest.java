@@ -21,8 +21,8 @@ public class OrderListTest {
     public void tearUp() throws Exception {
         //создание пользователя
         user = User.getRandomUser();
-
-        userAccessToken = UserSpec.getResponseCreateUser(user,200).accessToken;
+        UserSpec.getResponseCreateUser(user,200);
+        userAccessToken = UserSpec.accessToken;
         //количество заказов пользователя
         numberOfOrders = 4;
         //создание списка заказов пользователя
@@ -30,7 +30,7 @@ public class OrderListTest {
     }
 
     @After //удаление учетной записи пользователя
-    public void tearDown() throws Exception {
+    public void tearDown() {
         UserSpec.getResponseUserDeleted(userAccessToken, 202);
     }
 
@@ -38,7 +38,8 @@ public class OrderListTest {
     @DisplayName("Тест успешного получения списка заказов авторизованного пользователя")
     public void successfulGetOfOrdersListFromAuthorizedUserTestOk() throws JsonProcessingException {
         //авторизацию пользователя
-        userAccessToken = UserSpec.getResponseUserAuthorization(user, 200).accessToken;
+        UserSpec.getResponseUserAuthorization(user, 200);
+        userAccessToken = UserSpec.accessToken;
         //получения списка заказов пользователя
         ArrayList<Integer> orderNumber =
                 new ArrayList<>(OrderSpec.getAnOrderListRequestResponse(userAccessToken, 200)

@@ -1,4 +1,5 @@
 package order;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import io.qameta.allure.Step;
@@ -58,16 +59,18 @@ public class OrderSpec {
         String[] ingredients = new String[]{ingredientsHash.get(0), ingredientsHash.get(ingredientsHash.size() - 1)};
         Order order = new Order(ingredients);
         // запрос на авторизацию пользователя
-        UserSpec response = userSpec.getResponseUserAuthorization(user, 200);
+        UserSpec.getResponseUserAuthorization(user, 200);
+        String responseAccessToken = UserSpec.accessToken;
+        String responseRefreshToken = UserSpec.refreshToken;
         // создание numberOfOrders количества заказов
         for (int i = 0; i < numberOfOrders; i++){
             // запрос на создание заказа
-            orderSpec.getResponseCreateOrder(order, response.accessToken, 200)
+            OrderSpec.getResponseCreateOrder(order, responseAccessToken, 200)
                     .assertThat()
                     .body("order.number",notNullValue());
         }
         // выход из учетной записи пользователя
-        userSpec.getResponseLogoutUser(response.refreshToken, 200);
+        userSpec.getResponseLogoutUser(responseRefreshToken, 200);
     }
 
     @Step("Получение списка заказов")
