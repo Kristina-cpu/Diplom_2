@@ -45,7 +45,7 @@ public class OrderSpec {
 
     @Step("Создание списка валидных хешей ингредиентов")
     public static ArrayList<String> getCreatedListOfValidHashesOfIngredients() throws JsonProcessingException {
-        ArrayList<String> ingredientsHash = new ArrayList<>(orderSpec.getResponseRequestIngredients()
+        ArrayList<String> ingredientsHash = new ArrayList<>(OrderSpec.getResponseRequestIngredients()
                 .extract()
                 .path("data._id"));
         return ingredientsHash;
@@ -70,7 +70,7 @@ public class OrderSpec {
                     .body("order.number",notNullValue());
         }
         // выход из учетной записи пользователя
-        userSpec.getResponseLogoutUser(responseRefreshToken, 200);
+        UserSpec.getResponseLogoutUser(responseRefreshToken, 200);
     }
 
     @Step("Получение списка заказов")
